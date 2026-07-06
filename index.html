@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dự án Chạm - Psychovation 2026 Demo V2</title>
+    <title>Dự án Chạm - Psychovation 2026 Demo</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
 
@@ -104,6 +104,12 @@
         .history-detail { flex: 1; }
         .history-name { font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 2px; }
         .history-action { font-size: 11px; color: #64748b; line-height: 1.4; }
+
+        /* --- SETTINGS TAB (TOGGLE SWITCH) --- */
+        .toggle-btn { width: 44px; height: 24px; background: #cbd5e1; border-radius: 12px; position: relative; cursor: pointer; transition: 0.3s; }
+        .toggle-btn.active { background: #10b981; }
+        .toggle-circle { width: 18px; height: 18px; background: white; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .toggle-btn.active .toggle-circle { transform: translateX(20px); }
 
         /* --- BOTTOM NAV --- */
         .bottom-nav { position: absolute; bottom: 0; width: 100%; height: 70px; background-color: white; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; align-items: center; padding-bottom: 15px; z-index: 20; }
@@ -228,7 +234,7 @@
                 <button class="sync-btn" id="syncBtn">
                     <span id="syncBtnText" data-i18n="btn_sync">📲 Gửi thông báo ZNS</span>
                 </button>
-                <div style="height: 30px;"></div> <!-- Spacer -->
+                <div style="height: 30px;"></div>
             </div>
 
             <!-- TAB 2: BÁO CÁO (DASHBOARD) -->
@@ -251,7 +257,7 @@
 
                 <div class="section-title" data-i18n="rep_history">Lịch sử ghi nhận</div>
                 <div class="history-list" id="historyList">
-                    <!-- Data mồi (Mock data) -->
+                    <!-- Data mồi -->
                     <div class="history-item overload">
                         <div class="history-time">09:15</div>
                         <div class="history-detail">
@@ -270,6 +276,83 @@
                 <div style="height: 30px;"></div>
             </div>
 
+            <!-- TAB 3: CÀI ĐẶT (SETTINGS) -->
+            <div id="tabSettings" class="tab-content">
+                
+                <!-- Profile Info -->
+                <div style="display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                    <div style="width: 50px; height: 50px; background: #e0f2fe; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px;">👩‍🏫</div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 700; color: #1e293b;" data-i18n="set_profile">Nguyễn Thị A</div>
+                        <div style="font-size: 12px; color: #64748b;" data-i18n="set_role">Giáo viên chủ nhiệm - Lớp Mầm 1</div>
+                    </div>
+                </div>
+
+                <!-- Cấu hình Hệ thống -->
+                <div class="section-title" data-i18n="set_sys">Hệ sinh thái "Chạm"</div>
+                <div style="background: white; border-radius: 16px; padding: 5px 15px; margin-bottom: 20px;">
+                    
+                    <!-- Smart LED Corner -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="background: #f0fdf4; padding: 8px; border-radius: 10px; font-size: 16px;">💡</div>
+                            <div>
+                                <div style="font-size: 13px; font-weight: 600; color: #334155;" data-i18n="set_led">Đèn LED Góc Bình Tĩnh</div>
+                                <div style="font-size: 10px; color: #10b981;" data-i18n="set_led_status">Đã kết nối Bluetooth</div>
+                            </div>
+                        </div>
+                        <!-- Toggle Switch -->
+                        <div class="toggle-btn active" onclick="this.classList.toggle('active')">
+                            <div class="toggle-circle"></div>
+                        </div>
+                    </div>
+
+                    <!-- PECS Customization -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer;" onclick="showToastMock()">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="background: #fef2f2; padding: 8px; border-radius: 10px; font-size: 16px;">🗂</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #334155;" data-i18n="set_pecs">Tùy chỉnh Bộ thẻ PECS</div>
+                        </div>
+                        <div style="color: #94a3b8; font-size: 14px;">></div>
+                    </div>
+
+                    <!-- Zalo Sync Mngt -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; cursor: pointer;" onclick="showToastMock()">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="background: #eff6ff; padding: 8px; border-radius: 10px; font-size: 16px;">📱</div>
+                            <div>
+                                <div style="font-size: 13px; font-weight: 600; color: #334155;" data-i18n="set_parent">Liên kết SĐT Phụ huynh</div>
+                                <div style="font-size: 10px; color: #94a3b8;" data-i18n="set_parent_sub">35/35 học sinh đã đồng bộ</div>
+                            </div>
+                        </div>
+                        <div style="color: #94a3b8; font-size: 14px;">></div>
+                    </div>
+                </div>
+
+                <!-- Báo cáo & Khác -->
+                <div class="section-title" data-i18n="set_admin">Hành chính (QĐ 3276/MOET)</div>
+                <div style="background: white; border-radius: 16px; padding: 5px 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer;" onclick="showToastMock()">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="background: #fffbeb; padding: 8px; border-radius: 10px; font-size: 16px;">📄</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #334155;" data-i18n="set_export">Xuất báo cáo (Excel)</div>
+                        </div>
+                        <div style="color: #94a3b8; font-size: 14px;">></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; cursor: pointer;" onclick="showToastMock()">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="background: #f1f5f9; padding: 8px; border-radius: 10px; font-size: 16px;">❓</div>
+                            <div style="font-size: 13px; font-weight: 600; color: #334155;" data-i18n="set_help">Hướng dẫn sử dụng</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 25px; font-size: 11px; color: #94a3b8; font-weight: 600;">
+                    Chạm App v1.0 (Demo Mode)<br>Developed by HUTECH Psychology
+                </div>
+                <div style="height: 40px;"></div>
+            </div>
+
         </div> <!-- End Content -->
 
         <!-- Bottom Navigation -->
@@ -282,7 +365,7 @@
                 <div class="nav-icon">📊</div>
                 <span data-i18n="nav_report">Báo cáo</span>
             </div>
-            <div class="nav-item" onclick="alert(currentLang === 'vi' ? 'Tính năng đang phát triển' : 'Feature in development')">
+            <div class="nav-item" onclick="switchTab('tabSettings', this)">
                 <div class="nav-icon">⚙️</div>
                 <span data-i18n="nav_settings">Cài đặt</span>
             </div>
@@ -303,11 +386,9 @@
     }
 
     function switchTab(tabId, el) {
-        // Reset active nav
         document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
         el.classList.add('active');
         
-        // Reset active tab content
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
     }
@@ -324,7 +405,11 @@
             b_water: "Thẻ: Cần uống nước", b_toilet: "Thẻ: Đi vệ sinh", b_calm: "Vào Góc Bình Tĩnh (Sensory Corner)", b_overload: "Quá tải âm thanh (Audio Overload)", b_meltdown: "Khủng hoảng hành vi (Meltdown)",
             btn_sync: "📲 Gửi thông báo ZNS", toast_msg: "Đã gửi Zalo phụ huynh: <b>{student}</b> vừa <b>{behavior}</b>.",
             nav_home: "Ghi nhận", nav_report: "Báo cáo", nav_settings: "Cài đặt",
-            rep_title: "Tổng quan hôm nay", rep_date: "Ngày: Hôm nay", rep_stat1: "Tương tác Zalo", rep_stat2: "Quá tải cảm giác", rep_history: "Lịch sử ghi nhận mới nhất"
+            rep_title: "Tổng quan hôm nay", rep_date: "Ngày: Hôm nay", rep_stat1: "Tương tác Zalo", rep_stat2: "Quá tải cảm giác", rep_history: "Lịch sử ghi nhận mới nhất",
+            set_profile: "Nguyễn Thị A", set_role: "Giáo viên chủ nhiệm - Lớp Mầm 1",
+            set_sys: "Hệ sinh thái \"Chạm\"", set_led: "Đèn LED Góc Bình Tĩnh", set_led_status: "Đã kết nối Bluetooth",
+            set_pecs: "Tùy chỉnh Bộ thẻ PECS", set_parent: "Liên kết SĐT Phụ huynh", set_parent_sub: "35/35 học sinh đã đồng bộ",
+            set_admin: "Hành chính (QĐ 3276/MOET)", set_export: "Xuất báo cáo (Excel)", set_help: "Hướng dẫn sử dụng"
         },
         en: {
             competition: "Psychovation 2026 - Psychology Day", subtitle: "An Inclusive Digital Kindergarten Ecosystem",
@@ -336,16 +421,19 @@
             b_water: "Card: Needs Water", b_toilet: "Card: Needs Toilet", b_calm: "Moved to Sensory Corner", b_overload: "Audio Overload Episode", b_meltdown: "Behavioral Meltdown",
             btn_sync: "📲 Send Zalo ZNS", toast_msg: "Zalo sent: <b>{student}</b> logged <b>{behavior}</b>.",
             nav_home: "Log", nav_report: "Reports", nav_settings: "Settings",
-            rep_title: "Today's Overview", rep_date: "Date: Today", rep_stat1: "Zalo Interactions", rep_stat2: "Sensory Overloads", rep_history: "Recent Activity Log"
+            rep_title: "Today's Overview", rep_date: "Date: Today", rep_stat1: "Zalo Interactions", rep_stat2: "Sensory Overloads", rep_history: "Recent Activity Log",
+            set_profile: "Ms. Nguyen Thi A", set_role: "Lead Teacher - Kindergarten 1",
+            set_sys: "\"Touch\" Ecosystem", set_led: "Calming Corner LED Strip", set_led_status: "Bluetooth Connected",
+            set_pecs: "Customize PECS Deck", set_parent: "Link Parents' Phone/Zalo", set_parent_sub: "35/35 students synced",
+            set_admin: "Admin (MOET 3276 Compliance)", set_export: "Export Reports (Excel)", set_help: "User Manual"
         }
     };
 
     let currentLang = 'vi';
     let currentStudentKey = 'stu_1';
     let currentBehaviorKey = 'b_water';
-    let currentBehaviorType = 'positive'; // positive or negative
+    let currentBehaviorType = 'positive'; 
 
-    // Thống kê mô phỏng
     let totalLogs = 12;
     let totalAlerts = 2;
 
@@ -355,7 +443,6 @@
             btn.classList.toggle('active', btn.innerText.toLowerCase() === lang);
         });
 
-        // Cập nhật text tĩnh
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             if (translations[lang][key]) {
@@ -365,8 +452,6 @@
     }
 
     // === 3. APP LOGIC (GHI NHẬN & BÁO CÁO) ===
-    
-    // Chọn học sinh
     const studentCards = document.querySelectorAll('.student-card');
     studentCards.forEach((card) => {
         card.addEventListener('click', function() {
@@ -376,7 +461,6 @@
         });
     });
 
-    // Chọn hành vi
     const behaviorItems = document.querySelectorAll('.behavior-item');
     behaviorItems.forEach(item => {
         item.addEventListener('click', function() {
@@ -387,7 +471,6 @@
         });
     });
 
-    // Nút Gửi (Sync)
     const syncBtn = document.getElementById('syncBtn');
     const syncBtnText = document.getElementById('syncBtnText');
     const znsToast = document.getElementById('znsToast');
@@ -395,7 +478,6 @@
     const historyList = document.getElementById('historyList');
 
     syncBtn.addEventListener('click', function() {
-        // 1. Tạo thông báo Toast
         const studentName = translations[currentLang][currentStudentKey];
         const behaviorName = translations[currentLang][currentBehaviorKey];
         
@@ -406,7 +488,6 @@
         toastMsg.innerHTML = msg;
         znsToast.classList.add('show');
 
-        // 2. Thêm dữ liệu vào Tab Báo cáo (Real-time Demo)
         const now = new Date();
         const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
         
@@ -422,7 +503,6 @@
         `;
         historyList.insertAdjacentHTML('afterbegin', newItemHTML);
 
-        // 3. Cập nhật con số thống kê
         totalLogs++;
         document.getElementById('statTotal').innerText = totalLogs;
         if(isNegative) {
@@ -430,7 +510,6 @@
             document.getElementById('statAlert').innerText = totalAlerts;
         }
 
-        // 4. Hiệu ứng nút bấm
         syncBtn.style.background = "#94a3b8";
         syncBtnText.innerHTML = currentLang === 'vi' ? "✅ Đã gửi thành công" : "✅ Sent Successfully";
         syncBtn.disabled = true;
@@ -442,6 +521,18 @@
             syncBtn.disabled = false;
         }, 3000);
     });
+
+    // Mock click cho các tính năng chưa phát triển ở tab Settings
+    function showToastMock() {
+        const msg = currentLang === 'vi' ? 'Tính năng sẽ mở khóa trong bản chính thức!' : 'Feature unlocked in full version!';
+        const origHtml = toastMsg.innerHTML;
+        toastMsg.innerHTML = `<b>Thông báo:</b> ${msg}`;
+        znsToast.classList.add('show');
+        setTimeout(() => { 
+            znsToast.classList.remove('show'); 
+            setTimeout(() => { toastMsg.innerHTML = origHtml; }, 500);
+        }, 2500);
+    }
 
     // Init
     setLang('vi');
